@@ -1,12 +1,19 @@
 require 'cypress'
-require 'validation_error'
-require 'validators/schema_validator'
-require 'validators/schematron_validator'
+require 'version'
+
 require 'mongoid'
 require 'mongoid-grid_fs'
+require 'hqmf-parser'
+
+Dir[Rails.root + 'lib/ext/*.rb'].each do |file|
+  require file
+end
+
+Dir[Rails.root + 'lib/validators/*.rb'].each do |file|
+  require file
+end
 XML_VALIDATION_INSPECTION="XmlValidationInspection"
 
-Rails.logger.auto_flushing=true
 MONGO_DB = Mongoid.default_session
 
 # insert races and ethnicities

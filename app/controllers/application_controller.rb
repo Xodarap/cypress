@@ -3,11 +3,12 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
   include Breadcrumbs
   include Rails.application.routes.url_helpers
-  delegate :url_helpers, to: 'Rails.application.routes' 
-  
-  protect_from_forgery
+  delegate :url_helpers, to: 'Rails.application.routes'
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
-  unless Rails.application.config.consider_all_requests_local 
+  protect_from_forgery with: :exception
+
+  unless Rails.application.config.consider_all_requests_local
     rescue_from Exception, with: :render_500
     rescue_from StandardError, with: :render_500
     rescue_from ArgumentError, with: :render_500
@@ -19,10 +20,9 @@ class ApplicationController < ActionController::Base
 
   protected
 
-
   class TypeNotFound < StandardError
   end
-  
+
   rescue_from TypeNotFound do |exception|
     render :text => exception, :status => 500
   end
@@ -41,8 +41,8 @@ class ApplicationController < ActionController::Base
       "application"
     end
   end
-  
-  
+
+
   def render_404(exception)
     logger.error(exception)
     @not_found_path = exception.message
@@ -54,10 +54,16 @@ class ApplicationController < ActionController::Base
 
   def render_500(exception)
     logger.error(exception)
-    @error = exception
+    @exception = exception
     respond_to do |format|
-         format.html { render template: 'errors/error_500', layout: 'layouts/application', status: 500 }
-         format.all { render nothing: true, status: 500}
-       end
-  end  
+      format.html { render template: 'errors/error_500', layout: 'layouts/application', status: 500 }
+      format.all { render nothing: true, status: 500}
+    end
+  end
+
+  private
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :first_name << :last_name << :telephone << :terms_and_conditions
+  end
 end

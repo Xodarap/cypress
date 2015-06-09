@@ -3,74 +3,59 @@ class AdminController < ApplicationController
   before_filter :validate_authorization!
 
   add_breadcrumb 'Dashboard',"/"
-	add_breadcrumb 'Admin',"/admin/index"
-  add_breadcrumb "Valuesets", '', :only=>"valuesets"
+  add_breadcrumb 'Admin',"/admin/index"
   add_breadcrumb "Users", '', :only=>"users"
 
-	def index
-		@jobs = AdminValuesetJob.ordered_by_date
-	end
-
-
-	def users
-		@users = User.all
-	end
-
-	def import_bundle
-		bundle = params[:bundle]
-		importer = QME::Bundle::Importer.new
-	  @bundle_contents = importer.import(bundle, params[:delete_existing])    
-    redirect_to :action=>:index
-	end
-
-	def update_value_sets
-    if Bundle.count == 0
-      flash[:errors]= "Cannot install/update valuesets until a bundle has been installed"
-      redirect_to :action=>:index
-      return
-    end
-
-		@job = AdminValuesetJob.where({}).or({status: "Waiting"},{status: "Running"}).first
-    if @job
-      flash[:errors] = "There is already an update running. Please wait until that one is finished before running again."
-    end
-
-		unless @job
-
-			@job = AdminValuesetJob.new
-			@job.save
-			@job.delay({attempts: Delayed::Worker.max_attempts-1, queue: :admin}).update_valuesets(params[:username],params[:password],params[:clear])
-
-		end
-		redirect_to :action=>:index
-	end
-
-  def job
-    @job = AdminValuesetJob.find(params[:id])
+  def index
 
   end
 
 
-  def delete_job
-    @job = AdminValuesetJob.find(params[:id])
-    @job.delete
-    flash[:message]= "Job (#{@job.id }) Deleted"
+  def users
+    @users = User.all
+  end
+
+  def import_bundle
+    begin
+      bundle = params[:bundle]
+      importer = HealthDataStandards::Import::Bundle::Importer
+      @bundle_contents = importer.import(bundle, {:update_measures=>params[:update_measures],
+                                                  :delete_existing => params[:delete_existing]})
+      b = Bundle.find(@bundle_contents["_id"])
+      b[:active] = params[:active]
+      b.save
+    rescue
+      flash[:errors] = $!.message
+    end
+
     redirect_to :action=>:index
   end
 
-
-  def valuesets
-    query = []
-    search = params[:search] || ""
-    if !search.empty?
-      query = [{display_name:/#{search}/i},{oid:/#{search}/i}]
+  def clear_database
+    ["bundles", "measures", "products", "vendors", "test_executions", "product_tests", "records", "patient_cache", "query_cache", "health_data_standards_svs_value_sets", "fs.chunks", "fs.files"].each do|collection|
+      Mongoid.default_session[collection].drop
     end
-    @page = params[:page] || 1
-    @limit = 100
-    @skip = (@page.to_i - 1) * @limit
-  
-    @valuesets = HealthDataStandards::SVS::ValueSet.or(query).skip(@skip).limit(@limit).order_by(:oid=>1)
-    @page_count =  (@valuesets.count.to_f / @limit.to_f).ceil
+    ::Mongoid::Tasks::Database.create_indexes
+    redirect_to :action=>:index
+  end
+
+  def delete_bundle
+    bundle = Bundle.find(params[:bundle_id])
+    bundle.delete
+    redirect_to :action=>:index
+  end
+
+  def activate_bundle
+    bundle = Bundle.find(params[:bundle_id])
+    enable = params[:active]
+    bundle[:active] = enable
+    bundle.save!
+    if (bundle.active)
+
+        render :text => "Yes - <a href=\"#\" class=\"disable\" data-bundleid=\"#{bundle.id}\">disable</span>"
+      else
+        render :text => "No - <a href=\"#\" class=\"enable\" data-bundleid=\"#{bundle.id}\">enable</span>"
+    end
   end
 
   def valueset
@@ -91,9 +76,9 @@ class AdminController < ApplicationController
     if user
       user.update_attribute(:disabled, disabled)
       if (disabled)
-        render :text => "<a href=\"#\" class=\"disable\" data-username=\"#{user.email}\">disabled</span>"
+        render :text => "<a href=\"#\" class=\"disable\" data-username=\"#{h(user.email)}\">disabled</span>"
       else
-        render :text => "<a href=\"#\" class=\"enable\" data-username=\"#{user.email}\">enabled</span>"
+        render :text => "<a href=\"#\" class=\"enable\" data-username=\"#{h(user.email)}\">enabled</span>"
       end
     else
       render :text => "User not found"
@@ -127,7 +112,7 @@ private
       render :text => "User not found"
     end
   end
-  
+
   def validate_authorization!
     authorize! :admin, :users
   end

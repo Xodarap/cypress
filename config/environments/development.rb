@@ -11,7 +11,8 @@ Cypress::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
+  config.action_controller.perform_caching = true
+  config.cache_store = :memory_store, { size: 64.megabytes }
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
@@ -26,10 +27,12 @@ Cypress::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
-  
+  config.assets.debug = false
+
+  config.eager_load = false
+
   # Limit logging for when we're testing
-  #config.log_level = :error  
+  #config.log_level = :error
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 

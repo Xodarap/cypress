@@ -8,9 +8,9 @@ class VendorTest < ActiveSupport::TestCase
     collection_fixtures('test_executions', '_id', "product_test_id")
     collection_fixtures('products', '_id','vendor_id')
     collection_fixtures('product_tests', '_id','product_id')
-    collection_fixtures('measures', '_id')
-    collection_fixtures('query_cache','_id','test_id')
-    collection_fixtures('patient_cache','_id')
+    collection_fixtures('measures', '_id','bundle_id')
+    collection_fixtures('query_cache','_id','test_id','bundle_id')
+    collection_fixtures('patient_cache','_id','bundle_id')
     
     @vendor1 = Vendor.find("4f57a8791d41c851eb000002")
     @vendor2 = Vendor.find("4f636aba1d41c851eb00048c")
@@ -40,6 +40,12 @@ class VendorTest < ActiveSupport::TestCase
     assert_equal 1.0/3.0, @vendor1.success_rate , "Vendor reporting wrong success rate"
     assert_equal 1.0,  @vendor2.success_rate  , "Vendor reporting wrong success rate"
     assert_equal 0.0, @emptyVendor.success_rate  , "Empty vendor reporting wrong success rate"
+  end
+
+  test "Should know if all products are passing" do
+    assert_equal false, @vendor1.passing?, "Vendor pass status doesn't match expected"
+    assert_equal true, @vendor2.passing?, "Vendor pass status doesn't match expected"
+    assert_equal true, @emptyVendor.passing?, "Vendor pass status doesn't match expected"
   end
   
 end

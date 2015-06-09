@@ -1,10 +1,13 @@
 class ProductTest
   include Mongoid::Document
-  
-  belongs_to :product
+  include Mongoid::Timestamps
+  include AASM
+
+  belongs_to :product, index: true, touch: true
   has_one :patient_population
-  has_many :test_executions, dependent: :delete
-  belongs_to :user
+  has_many :test_executions, dependent: :destroy
+  belongs_to :user, index: true
+  belongs_to :bundle, index: true
 
   embeds_many :notes, inverse_of: :product_test
 
@@ -14,58 +17,73 @@ class ProductTest
   field :effective_date, type: Integer
   field :measure_ids, type: Array
   field :expected_results, type: Hash
-  
-  
+  field :status_message, type: String
+  field :state, :type => Symbol
+
   validates_presence_of :name
   validates_presence_of :effective_date
+  validates_presence_of :bundle_id
 
-  scope :order_by_type, order_by(:_type => :desc)
-  
-  state_machine :state, :initial => :pending  do      
+  scope :order_by_type, -> { order_by(_type: desc) }
+
+  aasm column: :state do
+    state :pending, :initial => true
+    state :ready, :after_enter => :ready_callback
+    state :errored, :after_enter => :error_callback
+
     event :ready do
-      transition all => :ready
-    end  
-    
-    event :errored do
-      transition all => :error
+      transitions :to => :ready
     end
-    
+
+    event :errored do
+      transitions :to => :error
+    end
+
   end
-  
-  
-  def self.inherited(child)  
+
+  def ready_callback
+    self.status_message ="Ready"
+    self.save
+  end
+
+  def error_callback
+    self.status_message ="Error"
+    self.save
+  end
+
+  def self.inherited(child)
     child.instance_eval do
       def model_name
         ProductTest.model_name
       end
     end
-    super 
+    super
   end
-  
+
   def last_execution_date
 
   end
 
   # Returns true if this ProductTests most recent TestExecution is passing
   def execution_state
-    return :pending if self.test_executions.empty? 
+    return :pending if self.test_executions.empty?
 
     self.test_executions.ordered_by_date.first.state
   end
-  
+
   def passing?
     execution_state == :passed
   end
-  
+
   # Return all measures that are selected for this particular ProductTest
   def measures
     return [] if !measure_ids
-    Measure.in(:hqmf_id => measure_ids).order_by([[:hqmf_id, :asc],[:sub_id, :asc]])
+    self.bundle.measures.in(:hqmf_id => measure_ids).order_by([[:hqmf_id, :asc],[:sub_id, :asc]])
   end
-  
+
 
   def records
-    Record.where(:test_id => self.id)
+    Record.where(:test_id => self.id).order_by([:last , :asc])
   end
 
   def delete
@@ -76,12 +94,12 @@ class ProductTest
     records.destroy
     self.destroy
   end
-  
+
   # Get the expected result for a particular measure
   def expected_result(measure)
    (expected_results || {})[measure.key]
   end
-  
+
   # Used for downloading and e-mailing the records associated with this test.
    #
    # Returns a file that represents the test's patients given the requested format.
@@ -94,12 +112,34 @@ class ProductTest
   end
 
   def start_date
-    end_date.years_ago(1)
+    Time.at(self.bundle['measure_period_start']).gmtime
   end
 
   def end_date
     Time.at(effective_date).gmtime
   end
 
+
+  def results
+    Result.where("value.test_id"=> self.id).order_by(["value.last" , :asc])
+  end
+
+  def measure_results(measure)
+      self.results.where({"value.hqmf_id" => measure.hqmf_id, })
+  end
+
+  def destroy
+    self.results.destroy
+    self.records.destroy
+    Mongoid.default_session["query_cache"].where({"test_id" => self.id}).remove_all
+    super
+  end
+
+  def delete(options = {})
+     self.results.destroy
+     self.records.destroy
+     Mongoid.default_session["query_cache"].where({"test_id" => self.id}).remove_all
+    super
+  end
 
 end

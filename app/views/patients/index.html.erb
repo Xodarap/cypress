@@ -1,14 +1,12 @@
 <% content_for :head do %>
 
   <script type="text/javascript">
+    var bundle_id
     $(function() {
       $('#loading_dialog').dialog({
         autoOpen: false,
         closeOnEscape: false,
         draggable: false,
-        position: 'center',
-        width: 'auto',
-        height: '100',
         modal: true,
         resizable: false,
         open: function(event, ui) { $(".ui-dialog-titlebar-close").hide()}
@@ -16,28 +14,35 @@
     });
 
     function openLoadingDialog(){
-      $('#loading_dialog').dialog('open');
+      if (!$("#patient_subset").get(0)) {
+        $('#loading_dialog').dialog('open');
+      }
     }
     setTimeout("openLoadingDialog()",400);
 
     $(document).ready(function() {
+      $("#bundle_id").change(function(){
+        var b_id = $("option:selected", $(this)).val();
+        window.location = "<%= patients_path%>?bundle_id="+b_id;
+      });
+
   	  <% if params[:measure_id] != nil %>
   	    $.getJSON("<%=measure_definition_url(:measure_id => params[:measure_id])%>", $.cypress.renderMeasureJSON);
       <% end %>
-      <% if @test %>
-        <% if @result['numerator']=='?' %>
+      <% if @test  %>
+        <% if @result && @result['numerator']=='?' %>
           $.cypress.addPoll("<%= patients_path(:measure_id => @selected.id, :product_test_id => @test.id ) %>",
-                            "<%= table_patients_path(:measure_id => @selected.id, :product_test_id => @test.id,:execution=> params[:execution], :showAll => @showAll) %>")             
+                            "<%= table_patients_path(:measure_id => @selected.id, :product_test_id => @test.id,:execution=> params[:execution], :showAll => @showAll) %>")
         <% elsif @showAll%>
           $.cypress.updatePatientTable("<%= table_all_patients_path(:product_test_id => @test.id,:execution=> params[:execution]) %>")
         <% else %>
           $.cypress.updatePatientTable("<%= table_measure_patients_path(:measure_id => @selected.id, :product_test_id => @test.id,:execution=> params[:execution]) %>")
         <% end %>
       <% else %>
-        <% if @result['numerator']=='?' %>
+        <% if @result && @result['numerator']=='?' %>
           $.cypress.addPoll("<%= patients_path(:measure_id => @selected.id ) %>", "<%= table_patients_path(:measure_id => @selected.id, :showAll => @showAll) %>")
         <% elsif @showAll == true%>
-          $.cypress.updatePatientTable("<%= table_all_patients_path() %>")
+          $.cypress.updatePatientTable("<%= table_all_patients_path(:bundle_id=> params[:bundle_id] || Bundle.active.first.id) %>")
         <% else %>
           $.cypress.updatePatientTable("<%= table_measure_patients_path(:measure_id => @selected.id) %>")
         <% end %>
@@ -45,7 +50,7 @@
 
       var hidden  = true;
       $('#measureEditContainer').slideUp();
-  	  
+
   	  $('.measure_definition').click(function(){
     	  if(hidden){
           $('#measureEditContainer').slideDown(500);
@@ -57,10 +62,10 @@
     		}
   		  hidden = !hidden;
   	  });
-	  
+
     });
   </script>
-  
+
   <script type="text/html" id="ph_tmpl_paramItem">
     <div>
       <!-- ${percentage=Math.round(Math.random()*100,2)} -->
@@ -98,10 +103,10 @@
         zip_qrda_path = download_product_test_path(@test, :format => 'qrda')
         zip_html_path = download_product_test_path(@test, :format => 'html')
       else
-        zip_qrda_path = download_patients_path(:format => 'qrda')
-        zip_html_path = download_patients_path(:format => 'html')
+        zip_qrda_path = download_patients_path(:format => 'qrda', :bundle_id=>@bundle.id)
+        zip_html_path = download_patients_path(:format => 'html', :bundle_id=>@bundle.id)
       end %>
-      
+
       <%= link_to 'Download', '', {
         :id => 'download_menu',
         :class => "cmd",
@@ -116,7 +121,7 @@
           <%= link_to "Patients as HTML", zip_html_path, { :class => "ui-corner-all", :tabindex => "-1" } %>
         </li>
       </ul>
-    
+
       <nav class="breadcrumb">
         <%= link_to "Certification Dashboard", root_path %>
         <% if @test %>
@@ -129,7 +134,7 @@
         <% end %>
       </nav>
     </section>
-    
+
     <section class="nqf bordered buffered">
       <h2>
         <% if @test %>
@@ -138,8 +143,12 @@
           Master Patient List
         <% end %>
       </h2>
+      <% unless @test %>
+        <%= select_tag(:bundle_id, options_for_select(Bundle.active.order_by({version: 1}).collect{|b| ["#{b.title} - #{b.version}",b.id]},@bundle.id), :style=>"width: 300px;") %>
+      <% end %>
     </section>
-    
+
+    <% cache_unless(@test, "index-" + @bundle.version, skip_digest: true ) do %>
     <div class="tabs">
       NQF #
       <% @measures_categories.sort.each do |category, measures| %>
@@ -147,12 +156,12 @@
           <li><b><%= category %></b></li>
           <% measures.each do |measure_def| %>
             <li>
-              <a href="<%= patients_path(:product_test_id => @test, :measure_id=>measure_def.id,:execution=> params[:execution]) %>"
+              <a href="<%= patients_path(:product_test_id => @test, :measure_id=>measure_def.id,:execution=> params[:execution], :bundle_id=>@bundle.id) %>"
                 title="<%= "#{measure_def.name}" %><%= " - #{measure_def.subtitle}" if measure_def.sub_id %><%= ": #{measure_def.description}" %>"
-                class="<%= 'selected' if !@showAll and @selected.id==measure_def.id %>"><%= "#{measure_def.nqf_id}" %> <br><%= truncate("#{measure_def.subtitle}") %>
+                class="<%= 'selected' if !@showAll and @selected.id==measure_def.id %>"><%= "#{measure_def['cms_id']}" %>  NQF:<%= "#{measure_def.nqf_id}" %> <br><%= truncate("#{measure_def.subtitle}") %>
               </a>
             </li>
-          <% end %>        
+          <% end %>
         </ul>
       <% end %>
     </div>
@@ -212,7 +221,7 @@
                  </thead>
 
 
-
+                <% if @result %>
                 <tr id='<%= "#{@selected.id}" %>'>
                   <td>&nbsp;</td>
                   <td> <span class="den"><%= @result['IPP'] %></span></td>
@@ -222,11 +231,12 @@
                   <td> <span class="den"><%= @result['DENOM'] %></span></td>
                   <td> <span class="exc"><%= @result['DENEX'] %></span></td>
                   <td> <span class="num"><%= @result['NUMER'] %></span></td>
-                  <td> <span class="exc"><%= @result['DENEXEP'] %></span></td>
+                  <td> <span class="exc"><%= @result['DENEXCEP'] %></span></td>
                   <td> <span class="exc"><%= @result['antinumerator'] %></span></td>
                   </tr>
 
                   <% end %>
+                 <% end %>
                 <% else %>
                   <tr id='all_measures'>
                  </tr>
@@ -236,9 +246,10 @@
             </dd>
           </dl>
         </section>
-     <% end %>
+      <% end %>
       <section id="product_test_patients">
       </section>
     </section>
+    <% end %>
   </div>
-</div><!-- end #container -->     
+</div><!-- end #container -->

@@ -2,50 +2,24 @@
 (function($) {
 
     $.testWizard = {};
-  
-    $.testWizard.updateMeasureSet = function(testType) {
-        $('#measures').empty().html('<div class="busy">Finding measures for test type ' + testType + '...</h3>');
+
+    $.testWizard.updateMeasureSet = function(testType, bundle_id) {
+        $("#measures").empty().html('<div class="busy">Finding measures for test type ' + testType + "...</h3>");
         var ids = [];
         // get the measures for this type of test
         $.ajax({
-            url: "/measures/by_type",
+            url: "/measures/by_type?bundle_id=" + bundle_id,
             type: "POST",
             data: {
                 type: testType
             },
-            dataType: 'script',
-            error: function(xhr, err) {
-                alert("Sorry, we can't currently produce measures by type:'" + testType + "'\n" + err);
+            dataType: "script",
+            error: function(xhr, textStatus, err) {
+              alert("Sorry, we can't currently produce measures by type:'" + testType + "'\n" + err);
             }
         });
     };
 
-  
-/*    commented out functionality related to the minimal patient set since
- *    that screen is no longer part of the wizard sequence
-     $.testWizard.updateMinimalPatientSet = function() {
-        $('#measure_coverage').empty().html('<div class="busy">Finding appropriate patients...</h3>');
-        var ids = [];
-        $('.measure_cb:checked').each(function(i,e) {
-            var id = $(e).attr('id');
-            ids.push(id.substr(id.lastIndexOf('_')+1));
-        });
-        // get the needed num/den/exc for each of the selected measures
-        $.ajax({
-            url: "/measures/minimal_set",
-            type: "POST",
-            data: {
-                measure_ids: ids,
-                product_id: $('#product_test_product_id').val(),
-                num_records: $('#total_records').val()
-            },
-            dataType: 'script',
-            error: function(xhr, err) {
-                alert("Sorry, we can't currently calculate large numbers of quality measures:\n" + err);
-            }
-        });
-    };
-*/
     $.testWizard.updateProgressBar = function(screen) {
         switch (screen) {
             case "first":
@@ -66,7 +40,7 @@
 //                break;
         }
     }
-  
+
 })( jQuery );
 
 $(document).ready(function() {
@@ -130,7 +104,7 @@ $(document).ready(function() {
     }).bind("step_shown", function(event,data){ //TODO still need to hook up validation
         // do screen-specific functions here
         if (data.currentStep == "wizard-measures-screen") {
-            $.testWizard.updateMeasureSet($('[name=type]:checked').val());
+            $.testWizard.updateMeasureSet($('[name=type]:checked').val(),$('[name=bundle_id]').val());
         }
 //        if (data.currentStep == "wizard-patients-manual-screen") {
 //            $.testWizard.updateMinimalPatientSet();
@@ -158,7 +132,7 @@ $(document).ready(function() {
             cache = {}; // empty the cache again
         }
     });
-    // disableUIStyles doesn't prevent these classes from being added to the buttons. 
+    // disableUIStyles doesn't prevent these classes from being added to the buttons.
     // we'll remove them here instead of overriding in the stylesheets.
     $("#navigation input").removeClass("ui-formwizard-button ui-wizard-content");
     $.testWizard.updateProgressBar("first");
@@ -176,4 +150,20 @@ $(document).ready(function() {
             error.appendTo( $('#validationErrorMessages') );
         }
     });
+});
+
+$(document).ready(function(){
+
+    $('#bundle_id').change(function(){
+        var d = effective_dates[$(this).selected().val()];
+        var s = start_dates[$(this).selected().val()];
+        var md = moment(d*1000).utc();
+        var mds = moment(s*1000).utc();
+        $("input[name='product_test[effective_date]']").val(d);
+        $("#effective_date_end").html(md.calendar())
+        $("#effective_date_start").html(mds.calendar());
+
+    });
+    $('#bundle_id').change();
+
 });

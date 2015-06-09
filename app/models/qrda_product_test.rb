@@ -1,29 +1,37 @@
-class QRDAProductTest < ProductTest
-  after_create :generate_population
-  
-  def generate_population
-    Delayed::Job.enqueue(Cypress::QRDAGenerationJob.new({"test_id" =>  self.id.to_s}))
-  end
-  
-  def execute(params)
+require 'validators/smoking_gun_validator'
+require 'validators/qrda_cat1_validator'
 
-    file = params[:results]
-    te = self.test_executions.build(expected_results: self.expected_results, execution_date: Time.now.to_i)
-    te.execution_errors = Cypress::QrdaUtility.validate_cat_1(file.open.read, measures, "results")
-    ids = Cypress::ArtifactManager.save_artifacts(file,te)
-    te.file_ids = ids
+class QRDAProductTest < ProductTest
+  include Mongoid::Attributes::Dynamic
+  include ::Validators
+
+
+  belongs_to :calculated_product_test, foreign_key: "calculated_test_id", index: true
+
+  def validators
+    @validators ||= [QrdaCat1Validator.new(self.bundle, self.measures),
+    SmokingGunValidator.new(self.measures, self.records, self.id)]
+  end
+
+  def execute(file)
+    te = self.test_executions.build(expected_results: self.expected_results,
+           execution_date: Time.now.to_i)
+    te.artifact = Artifact.new(file: file)
     te.save
-    (te.count_errors > 0) ? te.failed : te.pass
+    te.validate_artifact(validators)
+    te.save
     te
   end
 
   def measures
     return [] if !measure_ids
-    Measure.in(:hqmf_id => measure_ids).top_level.order_by([[:hqmf_id, :asc],[:sub_id, :asc]])
+    self.bundle.measures.in(:hqmf_id => measure_ids).top_level.order_by([[:hqmf_id, :asc],[:sub_id, :asc]])
   end
-  
-  
-  def self.product_type_measures
-    Measure.top_level
+
+
+  def self.product_type_measures(bundle)
+    bundle.measures.top_level
   end
+
+
 end

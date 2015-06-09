@@ -7,6 +7,7 @@ Cypress::Application.configure do
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+   config.cache_store = :memory_store, { size: 64.megabytes }
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false
@@ -28,7 +29,7 @@ Cypress::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -57,10 +58,12 @@ Cypress::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-  
+
   # Only log errors
   config.log_level = :error
-  
+
   # Mailer
   ActionMailer::Base.delivery_method = :smtp
+
+  config.eager_load = true
 end

@@ -15,18 +15,15 @@ module QrdaExecutionHelper
 def node_type(type)
   return NODE_TYPES[type]
 end
-   # method used to mark the elements in the document that have errors so they 
+   # method used to mark the elements in the document that have errors so they
   # can be linked to
-  def match_errors(test_execution)
-    if test_execution.files.length == 0
-      return Nokogiri::XML::Document.new, {},{}
-    end
-    file = test_execution.files[0]
-    doc = Nokogiri::XML(file.data)
+  def match_errors(doc, errors)
+    doc = Nokogiri::XML(doc) if doc.kind_of? String
+    uuid = UUID.new
     error_map = {}
     error_id = 0
     error_attributes = []
-    locs = test_execution.execution_errors.by_validation_type(:xml_validation).collect{|e| e.location}
+    locs = errors.collect{|e| e.location}
     locs.compact!
 
     locs.each do |location|
@@ -39,11 +36,12 @@ end
           error_attributes << node
           elem = node.element
         end
+        elem = elem.root if node_type(elem.type) == :document
         if elem
-          
+
           unless elem['error_id']
-            elem['error_id']= "#{error_id}"
-            error_id += 1
+
+            elem['error_id']= uuid.generate.to_s
           end
           error_map[location] = elem['error_id']
         end
@@ -52,7 +50,7 @@ end
 
     return doc, error_map, error_attributes
   end
-  
+
   # helper method used to generate cat 3 test results
   def aggregated_measure_results(pt)
     results = {}
@@ -61,7 +59,7 @@ end
       population_ids = value["population_ids"]
       strat_id = population_ids["stratification"]
       population_ids.each_pair do |pop_key,pop_id|
-        if pop_key != "stratification" 
+        if pop_key != "stratification"
           pop_result  = result["population_ids"][pop_id] ||= {"type"=> pop_key}
           pop_val = value[pop_key]
           if strat_id

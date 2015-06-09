@@ -3,16 +3,17 @@
 
 class PatientPopulation
   include Mongoid::Document
-  
-  belongs_to :product_test
-  belongs_to :user
-  has_and_belongs_to_many :records
-  
+  include HealthDataStandards::CQM
+
+  belongs_to :product_test, index: true
+  belongs_to :user, index: true
+  has_and_belongs_to_many :records, index: true
+
   field :id, type: String
   field :name, type: String
   field :description, type: String
   field :patient_ids, type: Array
- 
+
   validates_presence_of :id
   validates_presence_of :name
   validates_presence_of :patient_ids
@@ -20,104 +21,51 @@ class PatientPopulation
   def self.installed
     PatientPopulation.order_by([["name", :asc]]).to_a
   end
-  
-  def self.min_coverage(measures)
 
+  def self.min_coverage(measures, bundle)
+    bundle_id = (bundle.kind_of? Bundle)? bundle.id : bundle
+    bundle = (bundle.kind_of? Bundle)? bundle : Bundle.find(bundle)
+    effective_date = bundle.effective_date
 
-    # Get a hash of all measures requested, each with its own list of patients who are in that measure's numerator
-   measures_to_patients = MONGO_DB.command(:group=>{:ns=>'patient_cache', 
-                                           :key => {"value.measure_id"=>1, "value.sub_id"=>1, "value.test_id"=>1}, 
-                                           :cond => {"value.test_id"=>nil, "value.NUMER" => {"$gt"=>0},"value.measure_id"=>{"$in"=>measures}, "value.effective_date" => Cypress::MeasureEvaluator::STATIC_EFFECTIVE_DATE},
-                                           :initial => {:patients => []},
-                                           "$reduce"=> 'function(o,prev){prev.patients.push(o.value.medical_record_id);}'})["retval"]
-    
-  # Get a hash of all measures requested, each with its own list of patients who are in that measure's numerator
-   denominator_m_to_p = MONGO_DB.command(:group=>{:ns=>'patient_cache', 
-                                           :key => {"value.measure_id"=>1, "value.sub_id"=>1, "value.test_id"=>1}, 
-                                           :cond => {"value.test_id"=>nil, "value.NUMER"=> 0, "value.DENOM"=>{"$gt"=>0},"value.measure_id"=>{"$in"=>measures}, "value.effective_date" => Cypress::MeasureEvaluator::STATIC_EFFECTIVE_DATE},
-                                           :initial => {:patients => []},
-                                           "$reduce"=> 'function(o,prev){prev.patients.push(o.value.medical_record_id);}'})["retval"]
+    numerator_patient_counts = PatientCache.patient_counts_for_measures(bundle_id, measures,
+                                                                        effective_date, :numerator)
 
-# Get a hash of all measures requested, each with its own list of patients who are in that measure's numerator
-   exclusions_m_to_p = MONGO_DB.command(:group=>{:ns=>'patient_cache', 
-                                           :key => {"value.measure_id"=>1, "value.sub_id"=>1, "value.test_id"=>1}, 
-                                           :cond => {"value.test_id"=>nil, "value.NUMER"=> 0, "value.DENEX"=> {"$gt"=>0},"value.measure_id"=>{"$in"=>measures}, "value.effective_date" => Cypress::MeasureEvaluator::STATIC_EFFECTIVE_DATE},
-                                           :initial => {:patients => []},
-                                           "$reduce"=> 'function(o,prev){prev.patients.push(o.value.medical_record_id);}'})["retval"]
+    measures_to_numerator = PatientCache.measures_to_patients_for_population(bundle_id, measures, effective_date, :numerator)
+    measures_to_denominator = PatientCache.measures_to_patients_for_population(bundle_id, measures, effective_date, :denominator)
+    measures_to_exclusion = PatientCache.measures_to_patients_for_population(bundle_id, measures, effective_date, :exclusions)
 
-    # Order the measures by the amount of related patients, fewest to most
-    measures_to_patients.sort! {|a,b| 
-      al = a ? a['patients'].length : 0
-      bl = b ? b['patients'].length : 0
-      al <=> bl
-    }
+    minimum_set = []
 
-    # Break off a new hash of patients, each with its own list of measures to which they belong
-    patients = {}
-    measures_to_patients.each do |val|
-      val["patients"].each do |p|
-         patients[p] ||= []
-         entry = [val["value.measure_id"],val["value.sub_id"]]
-         patients[p].push entry unless patients[p].index(entry)
-      end
+    # Full set starts with all numerator patients
+    full_set = numerator_patient_counts.map {|npc| npc["_id"]}
+
+    # Add the most valuable patient for the numerator to the list
+    measures_to_numerator.each do |m_to_n|
+      mvp = numerator_patient_counts.find {|npc| m_to_n["patients"].include?(npc['_id'])}
+      minimum_set << mvp["_id"]
     end
 
-        
-    p_list = []
-    m_list = []
-    measures_to_patients.each do |val|
-      entry = [val["value.measure_id"],val["value.sub_id"]]
-      unless m_list.index(entry) 
-        m_list.push(entry)
-        patient = nil
-        # Find the patient that is most "valuable", i.e. has the longest list of measures in which they are included
-        val["patients"].each do |p|
-          patient ||= p
-          patient = (patients[patient].length < patients[p].length) ? p : patient
-        end
-        p_list.push(patient)
-        m_list.concat( patients[patient] )
+    measures_to_denominator.each do |m_to_d|
+      # Are there any pure denominator patients to choose from?
+      if (m_to_d["patients"] & minimum_set).empty?
+        minimum_set << m_to_d["patients"].sample
       end
-    end
-# add an extra person to the denominator for each measure
-    denominator_m_to_p.each do |val|
 
-       # as long as there is one from the denom only set in the list there is no need to add another
-       if (val["patients"]  & p_list).empty?
-         p =  val["patients"].sample
-          if p
-            p_list.push(p)
-          end
-      end
-    # add to the patient list to colelct overflow
-     val["patients"].each do |p|
-         patients[p] ||= []
-         entry = [val["value.measure_id"],val["value.sub_id"]]
-         patients[p].push entry unless patients[p].index(entry)
-      end
+      full_set.concat(m_to_d["patients"])
     end
 
-# add an extra person to the exclusions for each measure if one exists
-    exclusions_m_to_p.each do |val|
-       # as long as there is one from the denom only set in the list there is no need to add another
-       if (val["patients"]  & p_list).empty?
-         p =  val["patients"].sample
-          if p
-            p_list.push(p)
-          end
-      end
-    #add to the patient list to collect overflow
-     val["patients"].each do |p|
-         patients[p] ||= []
-         entry = [val["value.measure_id"],val["value.sub_id"]]
-         patients[p].push entry unless patients[p].index(entry)
+    measures_to_exclusion.each do |e_to_d|
+      # Are there any pure exclusion patients to choose from?
+      if (e_to_d["patients"] & minimum_set).empty?
+        minimum_set << e_to_d["patients"].sample
       end
 
+      full_set.concat(e_to_d["patients"])
     end
 
-    p_list.uniq!
-    { :minimal_set => p_list, :overflow => patients.keys - p_list }
- end
+    minimum_set.uniq!
+    full_set.uniq!
+
+    {:minimal_set => minimum_set, :overflow => full_set - minimum_set}
+  end
 end
-
-
