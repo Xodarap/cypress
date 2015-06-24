@@ -9,10 +9,9 @@ development:
 
 test:
   sessions:
-    default:
-      database: cypress_test
+      database: patid
       hosts:
-        - <%= ENV['TEST_DB_HOST'] || 'localhost' %>:27017
+        - localhost:27017
   options:
     raise_not_found_error: false
 
@@ -23,14 +22,13 @@ production:
       hosts:
         - 54.152.244.137:27017
   options:
-    raise_not_found_error: false
+    raise_not_found_error: true
 
 measure_eval:
   sessions:
     default:
-      database: cypress_measure_eval
+      database: patid
       hosts:
-        - 54.152.244.137:27017
+        - localhost:27017
   options:
     raise_not_found_error: false
-
