@@ -7,9 +7,9 @@ module Validators
 
     self.validator_type = :result_validation
 
-    def initialize(bundle, measures=[])
+    def initialize(bundle, measures=[], parent_measures=[])
       @measures = measures
-      @validators = [CDA.instance, Cat1.instance, HealthDataStandards::Validate::DataValidator.new(bundle, measures.collect {|m| m.hqmf_id })]
+      @validators = [CDA.instance, Cat1R2.instance, HealthDataStandards::Validate::DataValidator.new(bundle, parent_measures.collect {|m| m.hqmf_id })]
     end
 
     # Validates a QRDA Cat I file.  This routine will validate the file against the CDA schema as well as the
@@ -27,7 +27,7 @@ module Validators
 
       validation_errors.each do |error|
         add_error error.message, {message: error.message,
-          location: error.location, validator: error.validator}
+          location: error.location, validator: error.validator, file_name: error.file_name}
       end
 
       @measures.each do |measure|

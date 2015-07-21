@@ -64,6 +64,9 @@ class TestExecution
 
       validators.each do |validator|
         validator.validate(doc, {file_name: name})
+        if validator.is_a? ::Validators::ExpectedResultsValidator
+          self.reported_results = validator.reported_results
+        end
       end
       file_count += 1
     end
@@ -71,11 +74,12 @@ class TestExecution
     validators.each do |v|
       self.execution_errors.concat v.errors
     end
-
-    if file_count != self.product_test.records.count
-      self.execution_errors.build(message: "#{self.product_test.records.count} files expected but was #{file_count}", msg_type: :error, validator_type: :result_validation)
+    #only run for Cat1 tests
+    if self.product_test._type == "QRDAProductTest"
+      if file_count != self.product_test.records.count
+  self.execution_errors.build(message: "#{self.product_test.records.count} files expected but was #{file_count}", msg_type: :error, validator_type: :result_validation)
+      end
     end
-
     (self.count_errors > 0) ? self.failed : self.pass
   end
 
@@ -102,15 +106,15 @@ class TestExecution
   end
 
   def passing?
-    @state == :passed
+    self.state == :passed
   end
 
-  def failing
-    @state == :failed
+  def failing?
+    self.state == :failed
   end
 
   def incomplete?
-    (!passing? && !failing)
+    (!passing? && !failing?)
   end
 
   def files

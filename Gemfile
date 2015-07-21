@@ -1,7 +1,7 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'bson'
-gem 'rails', '~> 4.1.8'
+gem 'rails', '~> 4.1.11'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rake'
@@ -14,8 +14,8 @@ gem 'rake'
 gem 'quality-measure-engine', '3.1.2'
 # gem 'health-data-standards', "3.5.3"
 
+#gem 'health-data-standards', path: "../health-data-standards"
 gem 'health-data-standards',:git => 'https://github.com/projectcypress/health-data-standards.git', :branch => 'master'
-
 
 #gem 'quality-measure-engine', '~> 2.5.0'
 # gem 'health-data-standards',:git => 'https://github.com/ssayer/health-data-standards.git', :branch => 'validators'
@@ -79,6 +79,7 @@ group :test do
   gem 'rails-perftest'
   gem 'ruby-prof'
   gem 'simplecov'
+  gem 'bundler-audit'
 end
 
 group :production do
