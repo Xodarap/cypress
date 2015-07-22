@@ -1,0 +1,2087 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns="urn:hl7-org:v3"
+                  xmlns:cda="urn:hl7-org:v3">
+
+  <!--
+    ********************************************************
+    CDA Header
+    ********************************************************
+  -->
+  <realmCode code="US"/>
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+  <!-- QRDA Category III Release 1 template ID (this template ID differs from QRDA III comment only template ID). -->
+  <templateId root="2.16.840.1.113883.10.20.27.1.1"/>
+
+  <!-- (CONF:711281) -->
+  <templateId root="2.16.840.1.113883.10.20.27.1.2"/>
+
+  <!-- (CONF:17236) -->
+  <id root="6da48210-0ca2-0133-adb5-061985ab859c" extension="314159"/>
+
+
+  <!-- SHALL QRDA III document type code -->
+  <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+        displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
+  <!-- SHALL Title, SHOULD have this content -->
+  <title>QRDA Calculated Summary Report</title>
+  <!-- SHALL  -->
+  <effectiveTime value="20150714220557"/>
+
+  <!-- (CONF:711174) -->
+  <confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+
+  <!-- (CONF:711173) -->
+  <languageCode code="en"/>
+  <!-- SHOULD The version of the file being submitted. -->
+  <versionNumber value="1"/>
+  <!-- SHALL contain recordTarget and ID - but ID is nulled to NA. This is an aggregate summary report. Therefore CDA's required patient identifier is nulled. -->
+  <recordTarget>
+    <patientRole>
+      <id nullFlavor="NA"/>
+    </patientRole>
+  </recordTarget>
+
+   <!-- SHALL have 1..* author. MAY be device or person. 
+    The author of the CDA document in this example is a device at a data submission vendor/registry. -->
+  <author>
+    <time value="20150714220557"/>
+    <assignedAuthor>
+      <!-- Registry author ID -->
+      <!-- TODO: force only one author (CONF:711240) -->
+      <id root="2.16.840.1.113883.3.5587" extension="1"/>
+
+      
+      
+
+       <assignedAuthoringDevice>
+         <manufacturerModelName>Concinnity</manufacturerModelName>
+         <softwareName>2.16.840.1.113883.3.5587.2</softwareName>
+       </assignedAuthoringDevice>
+     
+     <representedOrganization>
+  <!-- Represents unique registry organization TIN -->
+    <!-- If DSV, then this is the DSV TIN -->
+   <id root="2.16.840.1.113883.4.2" extension="263971780"/>
+
+  <!-- Contains name - specific registry not required-->
+  <name>Suncoast RHIO</name>
+</representedOrganization>
+
+    </assignedAuthor>
+  </author>
+
+  <!-- SHALL have 1..* author. MAY be device or person.
+    The author of the CDA document in this example is a device at a data submission vendor/registry. -->
+
+  <!-- The custodian of the CDA document is the same as the legal authenticator in this
+  example and represents the reporting organization. -->
+  <!-- SHALL -->
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+  <!-- Represents unique registry organization TIN -->
+    <!-- If DSV, then this is the DSV TIN -->
+   <id root="2.16.840.1.113883.3.5587.1" extension="454505539"/>
+
+  <!-- Contains name - specific registry not required-->
+  <name></name>
+</representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+
+  <!-- CONF:711158 -->
+  <informationRecipient>
+    <intendedRecipient>
+      <id root="2.16.840.1.113883.3.249.7" extension="PQRS_MU_INDIVIDUAL"/>
+    </intendedRecipient>
+  </informationRecipient>
+  <!-- The legal authenticator of the CDA document is a single person who is at the
+    same organization as the custodian in this example. This element must be present. -->
+  <!-- SHALL -->
+  <legalAuthenticator>
+    <!-- SHALL -->
+    <time value="20150714220557"/>
+    <!-- SHALL -->
+    <signatureCode code="S"/>
+    <assignedEntity>
+      <!-- SHALL ID -->
+      <id root="2.16.840.1.113883.3.5587" extension="1"/>
+
+      
+      <assignedPerson>
+        <name>
+          <given>Christopher</given>
+          <family></family>
+        </name>
+      </assignedPerson>
+
+      <representedOrganization>
+  <!-- Represents unique registry organization TIN -->
+    <!-- If DSV, then this is the DSV TIN -->
+   <id root="2.16.840.1.113883.4.2" extension="263971780"/>
+
+  <!-- Contains name - specific registry not required-->
+  <name>Suncoast RHIO</name>
+</representedOrganization>
+    </assignedEntity>
+  </legalAuthenticator>
+
+  <!-- (CONF:18300) -->
+  <!--
+  <participant typeCode="DEV">
+    <associatedEntity classCode="RGPR">
+       Commented as not required & would require user input
+      Note: this causes an SEVT error?
+
+      <id root="2.16.840.1.113883.3.2074.1" extension="IG-3478-14-0108"/>
+      <code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+    </associatedEntity>
+  </participant>
+    -->
+
+  <documentationOf typeCode="DOC">
+  <serviceEvent classCode="PCPR"> <!-- care provision -->
+      <effectiveTime>
+        <low value= "20121231000000" />
+        <high value= "20131231000000" />
+      </effectiveTime>
+      <!-- You can include multiple performers, each with an NPI, TIN, CCN. -->
+      <performer typeCode="PRF">
+        <time>
+          <low value="20121231000000" />
+          <high value="20131231000000" />
+        </time>
+        <assignedEntity>
+          <id root="2.16.840.1.113883.4.6" extension="1234567890" />
+          <representedOrganization>
+                <!-- TIN -->
+                <id root="2.16.840.1.113883.4.2" extension="123456789" />
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+  </serviceEvent>
+</documentationOf>
+
+
+  <authorization>
+    <consent>
+      <id root="84613250-e75e-11e1-aff1-0800200c9a66"/>
+      <code code="425691002"
+            displayName="consent given for electronic record sharing"
+            codeSystem="2.16.840.1.113883.6.96"
+            codeSystemName="SNOMED-CT"/>
+      <statusCode code="completed"/>
+    </consent>
+  </authorization>
+
+  <!--
+********************************************************
+CDA Body
+********************************************************
+-->
+  <component>
+    <structuredBody>
+      <!--
+********************************************************
+QRDA Category III Reporting Parameters
+********************************************************
+-->
+            <component>
+        <section>
+          <!-- This is the templateId for Reporting Parameters section -->
+          <templateId root="2.16.840.1.113883.10.20.17.2.1"/>
+
+          <!-- This is the templateId for the QRDA III Reporting Parameters Section -->
+          <templateId root="2.16.840.1.113883.10.20.27.2.2"/>
+
+          <!-- This is the templateId for the CMS EP QRDA III Reporting Parameters Section (CONF:711141)-->
+          <templateId root="2.16.840.1.113883.10.20.27.2.6"/>
+
+          <code code="55187-9" codeSystem="2.16.840.1.113883.6.1"/>
+          <title>Reporting Parameters</title>
+          <text>
+            <list>
+              <item>Reporting period: December 31st, 2012 00:00 - December 31st, 2013 00:00</item>
+            </list>
+          </text>
+          <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <!-- This is the templateId for Reporting Parameters Act -->
+              <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+              <id extension="D2CAF4A0AFFEE3BD88A89D7DE95896F7" />
+
+              <!-- This is the templateId for CMS EP Reporting Parameters Act (CONF:711273) -->
+              <templateId root="2.16.840.1.113883.10.20.27.3.23"/>
+              <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters"/>
+              <effectiveTime>
+                <low value="20121231000000"/>
+                <high value="20131231000000"/>
+              </effectiveTime>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <!--
+********************************************************
+Measure Section
+********************************************************
+-->
+      <component>
+        <section>
+          <!-- Implied template Measure Section templateId -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.2"/>
+          <!-- In this case the query is using an eMeasure -->
+          <!-- QRDA Category III Measure Section template -->
+          <templateId root="2.16.840.1.113883.10.20.27.2.1"/>
+          <code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
+          <title>Measure Section</title>
+          <text>
+
+          </text>
+            <entry>
+              <organizer classCode="CLUSTER" moodCode="EVN">
+                <!-- Implied template Measure Reference templateId -->
+                <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+                <!-- SHALL 1..* (one for each referenced measure) Measure Reference and Results template -->
+                <templateId root="2.16.840.1.113883.10.20.27.3.1"/>
+                <id extension="40280381-4555-E1C1-0145-85C7311720F5"/>
+                <statusCode code="completed"/>
+                <reference typeCode="REFR">
+                  <externalDocument classCode="DOC" moodCode="EVN">
+                    <!-- SHALL: required Id but not restricted to the eMeasure Document/Id-->
+                    <!-- QualityMeasureDocument/id This is the version specific identifier for eMeasure -->
+                    <id root="2.16.840.1.113883.4.738" extension="40280381-4555-E1C1-0145-85C7311720F5"/>
+
+                    <code code="57024-2" displayName="Health Quality Measure Document" codeSystemName="LOINC" codeSystem="2.16.840.1.113883.6.1"/>
+                    <!-- SHOULD This is the title of the eMeasure -->
+                    <text>Weight Assessment and Counseling for Nutrition and Physical Activity for Children and Adolescents</text>
+                    <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                    <setId root="0B63F730-25D6-4248-B11F-8C09C66A04EB"/>
+                    <!-- This is the sequential eMeasure Version number -->
+                    <versionNumber value="3"/>
+                  </externalDocument>
+                </reference>
+
+                    <component>
+                      <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.27.3.14"/>
+  <!-- Performance Rate for Proportion Measure (CMS EP) template ID CONF:711256-->
+  <templateId root="2.16.840.1.113883.10.20.27.3.25"/>
+  <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" displayName="Performance Rate"   codeSystemName="LOINC"/>
+  <statusCode code="completed"/>
+  <value xsi:type="REAL" value="0"/>
+  <reference typeCode="REFR">
+     <externalObservation classCode="OBS" moodCode="EVN">
+       <id root="FD4649BD-B962-4CBE-BF4A-C2F95F3EA08E"/>
+       <code code="NUMER" displayName="Numerator"
+        codeSystem="2.16.840.1.113883.5.1063"
+        codeSystemName="ObservationValue"/>
+    </externalObservation>
+  </reference>
+</observation>
+
+                    </component>
+                    <component>
+                      <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.27.3.14"/>
+  <!-- Performance Rate for Proportion Measure (CMS EP) template ID CONF:711256-->
+  <templateId root="2.16.840.1.113883.10.20.27.3.25"/>
+  <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" displayName="Performance Rate"   codeSystemName="LOINC"/>
+  <statusCode code="completed"/>
+  <value xsi:type="REAL" value="0"/>
+  <reference typeCode="REFR">
+     <externalObservation classCode="OBS" moodCode="EVN">
+       <id root="52FBD726-4DD1-48F5-98B9-7175754923E1"/>
+       <code code="NUMER" displayName="Numerator"
+        codeSystem="2.16.840.1.113883.5.1063"
+        codeSystemName="ObservationValue"/>
+    </externalObservation>
+  </reference>
+</observation>
+
+                    </component>
+                    <component>
+                      <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.27.3.14"/>
+  <!-- Performance Rate for Proportion Measure (CMS EP) template ID CONF:711256-->
+  <templateId root="2.16.840.1.113883.10.20.27.3.25"/>
+  <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" displayName="Performance Rate"   codeSystemName="LOINC"/>
+  <statusCode code="completed"/>
+  <value xsi:type="REAL" value="0"/>
+  <reference typeCode="REFR">
+     <externalObservation classCode="OBS" moodCode="EVN">
+       <id root="C43CE779-C5EE-4C15-A4CC-AF1C446CFB09"/>
+       <code code="NUMER" displayName="Numerator"
+        codeSystem="2.16.840.1.113883.5.1063"
+        codeSystemName="ObservationValue"/>
+    </externalObservation>
+  </reference>
+</observation>
+
+                    </component>
+                    <component>
+                      <!--   MEASURE DATA REPORTING FOR    IPP  10127790-AE94-4070-9DD3-1D3776D08D7C  -->
+<observation classCode="OBS" moodCode="EVN">
+  <!-- Measure Data template -->
+  <templateId root="2.16.840.1.113883.10.20.27.3.5"/>
+  <code code="ASSERTION"
+        codeSystem="2.16.840.1.113883.5.4"
+        displayName="Assertion"
+        codeSystemName="ActCode"/>
+  <statusCode code="completed"/>
+  <value xsi:type="CD" code="IPP"
+         codeSystem="2.16.840.1.113883.5.1063"
+         codeSystemName="ObservationValue"/>
+  <!-- Aggregate Count -->
+  <entryRelationship typeCode="SUBJ" inversionInd="true">
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+      <code code="MSRAGG"
+            displayName="rate aggregation"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <!-- (CONF:711245) -->
+      <statusCode code="completed"/>
+
+      <value xsi:type="INT" value="7"/>
+      <methodCode code="COUNT"
+                  displayName="Count"
+                  codeSystem="2.16.840.1.113883.5.84"
+                  codeSystemName="ObservationMethod"/>
+    </observation>
+  </entryRelationship>
+
+    <!--  Startification Reporting Template for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C  Stratification 40280381-3D61-56A7-013E-5D53298E6DA3   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="4"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D53298E6DA3"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+    <!--  Startification Reporting Template for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C  Stratification 40280381-3D61-56A7-013E-5D532AF06DA5   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="3"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D532AF06DA5"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+      <!--    SEX Supplemental Data Reporting for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C      -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Sex Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.6"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="184100006"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="M"
+               codeSystem="2.16.840.1.113762.1.4.1"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="2"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--    SEX Supplemental Data Reporting for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C      -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Sex Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.6"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="184100006"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="F"
+               codeSystem="2.16.840.1.113762.1.4.1"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="5"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--     ETHNICITY Supplemental Data Reporting  for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C     -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Ethnicity Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.7"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="364699009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2186-5"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="5"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--     ETHNICITY Supplemental Data Reporting  for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C     -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Ethnicity Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.7"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="364699009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2135-2"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="2"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="1002-5"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="4"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2106-3"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for IPP  10127790-AE94-4070-9DD3-1D3776D08D7C -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2131-1"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="2"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--         PAYER Supplemental Data Reporting   forIPP  10127790-AE94-4070-9DD3-1D3776D08D7C   -->
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Payer Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.9"/>
+      <templateId root="2.16.840.1.113883.10.20.24.3.55"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="48768-6"
+          codeSystem="2.16.840.1.113883.6.1"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="349"
+               codeSystem="2.16.840.1.113883.3.221.5"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="7"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+  <reference typeCode="REFR">
+    <externalObservation classCode="OBS" moodCode="EVN">
+      <id root="10127790-AE94-4070-9DD3-1D3776D08D7C"/>
+    </externalObservation>
+  </reference>
+</observation>
+                    </component>
+                    <component>
+                      <!--   MEASURE DATA REPORTING FOR    DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6  -->
+<observation classCode="OBS" moodCode="EVN">
+  <!-- Measure Data template -->
+  <templateId root="2.16.840.1.113883.10.20.27.3.5"/>
+  <code code="ASSERTION"
+        codeSystem="2.16.840.1.113883.5.4"
+        displayName="Assertion"
+        codeSystemName="ActCode"/>
+  <statusCode code="completed"/>
+  <value xsi:type="CD" code="DENOM"
+         codeSystem="2.16.840.1.113883.5.1063"
+         codeSystemName="ObservationValue"/>
+  <!-- Aggregate Count -->
+  <entryRelationship typeCode="SUBJ" inversionInd="true">
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+      <code code="MSRAGG"
+            displayName="rate aggregation"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <!-- (CONF:711245) -->
+      <statusCode code="completed"/>
+
+      <value xsi:type="INT" value="7"/>
+      <methodCode code="COUNT"
+                  displayName="Count"
+                  codeSystem="2.16.840.1.113883.5.84"
+                  codeSystemName="ObservationMethod"/>
+    </observation>
+  </entryRelationship>
+
+    <!--  Startification Reporting Template for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6  Stratification 40280381-3D61-56A7-013E-5D53298E6DA3   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="4"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D53298E6DA3"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+    <!--  Startification Reporting Template for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6  Stratification 40280381-3D61-56A7-013E-5D532AF06DA5   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="3"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D532AF06DA5"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+      <!--    SEX Supplemental Data Reporting for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6      -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Sex Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.6"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="184100006"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="M"
+               codeSystem="2.16.840.1.113762.1.4.1"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="2"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--    SEX Supplemental Data Reporting for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6      -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Sex Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.6"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="184100006"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="F"
+               codeSystem="2.16.840.1.113762.1.4.1"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="5"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--     ETHNICITY Supplemental Data Reporting  for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6     -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Ethnicity Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.7"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="364699009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2186-5"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="5"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--     ETHNICITY Supplemental Data Reporting  for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6     -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Ethnicity Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.7"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="364699009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2135-2"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="2"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6 -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="1002-5"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="4"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6 -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2106-3"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for DENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6 -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2131-1"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="2"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--         PAYER Supplemental Data Reporting   forDENOM  3B3C1568-F875-49B1-9090-E2F494EECBB6   -->
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Payer Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.9"/>
+      <templateId root="2.16.840.1.113883.10.20.24.3.55"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="48768-6"
+          codeSystem="2.16.840.1.113883.6.1"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="349"
+               codeSystem="2.16.840.1.113883.3.221.5"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="7"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+  <reference typeCode="REFR">
+    <externalObservation classCode="OBS" moodCode="EVN">
+      <id root="3B3C1568-F875-49B1-9090-E2F494EECBB6"/>
+    </externalObservation>
+  </reference>
+</observation>
+                    </component>
+                    <component>
+                      <!--   MEASURE DATA REPORTING FOR    DENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A  -->
+<observation classCode="OBS" moodCode="EVN">
+  <!-- Measure Data template -->
+  <templateId root="2.16.840.1.113883.10.20.27.3.5"/>
+  <code code="ASSERTION"
+        codeSystem="2.16.840.1.113883.5.4"
+        displayName="Assertion"
+        codeSystemName="ActCode"/>
+  <statusCode code="completed"/>
+  <value xsi:type="CD" code="DENEX"
+         codeSystem="2.16.840.1.113883.5.1063"
+         codeSystemName="ObservationValue"/>
+  <!-- Aggregate Count -->
+  <entryRelationship typeCode="SUBJ" inversionInd="true">
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+      <code code="MSRAGG"
+            displayName="rate aggregation"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <!-- (CONF:711245) -->
+      <statusCode code="completed"/>
+
+      <value xsi:type="INT" value="1"/>
+      <methodCode code="COUNT"
+                  displayName="Count"
+                  codeSystem="2.16.840.1.113883.5.84"
+                  codeSystemName="ObservationMethod"/>
+    </observation>
+  </entryRelationship>
+
+    <!--  Startification Reporting Template for DENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A  Stratification 40280381-3D61-56A7-013E-5D53298E6DA3   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="1"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D53298E6DA3"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+    <!--  Startification Reporting Template for DENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A  Stratification 40280381-3D61-56A7-013E-5D532AF06DA5   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="0"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D532AF06DA5"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+      <!--    SEX Supplemental Data Reporting for DENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A      -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Sex Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.6"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="184100006"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="F"
+               codeSystem="2.16.840.1.113762.1.4.1"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--     ETHNICITY Supplemental Data Reporting  for DENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A     -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Ethnicity Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.7"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="364699009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2135-2"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for DENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2131-1"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--         PAYER Supplemental Data Reporting   forDENEX  B288D5A4-D573-4FAA-92D6-0B01E1B35C7A   -->
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Payer Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.9"/>
+      <templateId root="2.16.840.1.113883.10.20.24.3.55"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="48768-6"
+          codeSystem="2.16.840.1.113883.6.1"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="349"
+               codeSystem="2.16.840.1.113883.3.221.5"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+  <reference typeCode="REFR">
+    <externalObservation classCode="OBS" moodCode="EVN">
+      <id root="B288D5A4-D573-4FAA-92D6-0B01E1B35C7A"/>
+    </externalObservation>
+  </reference>
+</observation>
+                    </component>
+                    <component>
+                      <!--   MEASURE DATA REPORTING FOR    NUMER  FD4649BD-B962-4CBE-BF4A-C2F95F3EA08E  -->
+<observation classCode="OBS" moodCode="EVN">
+  <!-- Measure Data template -->
+  <templateId root="2.16.840.1.113883.10.20.27.3.5"/>
+  <code code="ASSERTION"
+        codeSystem="2.16.840.1.113883.5.4"
+        displayName="Assertion"
+        codeSystemName="ActCode"/>
+  <statusCode code="completed"/>
+  <value xsi:type="CD" code="NUMER"
+         codeSystem="2.16.840.1.113883.5.1063"
+         codeSystemName="ObservationValue"/>
+  <!-- Aggregate Count -->
+  <entryRelationship typeCode="SUBJ" inversionInd="true">
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+      <code code="MSRAGG"
+            displayName="rate aggregation"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <!-- (CONF:711245) -->
+      <statusCode code="completed"/>
+
+      <value xsi:type="INT" value="0"/>
+      <methodCode code="COUNT"
+                  displayName="Count"
+                  codeSystem="2.16.840.1.113883.5.84"
+                  codeSystemName="ObservationMethod"/>
+    </observation>
+  </entryRelationship>
+
+    <!--  Startification Reporting Template for NUMER  FD4649BD-B962-4CBE-BF4A-C2F95F3EA08E  Stratification 40280381-3D61-56A7-013E-5D53298E6DA3   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="0"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D53298E6DA3"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+    <!--  Startification Reporting Template for NUMER  FD4649BD-B962-4CBE-BF4A-C2F95F3EA08E  Stratification 40280381-3D61-56A7-013E-5D532AF06DA5   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="0"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D532AF06DA5"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+  <reference typeCode="REFR">
+    <externalObservation classCode="OBS" moodCode="EVN">
+      <id root="FD4649BD-B962-4CBE-BF4A-C2F95F3EA08E"/>
+    </externalObservation>
+  </reference>
+</observation>
+                    </component>
+                    <component>
+                      <!--   MEASURE DATA REPORTING FOR    NUMER  52FBD726-4DD1-48F5-98B9-7175754923E1  -->
+<observation classCode="OBS" moodCode="EVN">
+  <!-- Measure Data template -->
+  <templateId root="2.16.840.1.113883.10.20.27.3.5"/>
+  <code code="ASSERTION"
+        codeSystem="2.16.840.1.113883.5.4"
+        displayName="Assertion"
+        codeSystemName="ActCode"/>
+  <statusCode code="completed"/>
+  <value xsi:type="CD" code="NUMER"
+         codeSystem="2.16.840.1.113883.5.1063"
+         codeSystemName="ObservationValue"/>
+  <!-- Aggregate Count -->
+  <entryRelationship typeCode="SUBJ" inversionInd="true">
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+      <code code="MSRAGG"
+            displayName="rate aggregation"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <!-- (CONF:711245) -->
+      <statusCode code="completed"/>
+
+      <value xsi:type="INT" value="1"/>
+      <methodCode code="COUNT"
+                  displayName="Count"
+                  codeSystem="2.16.840.1.113883.5.84"
+                  codeSystemName="ObservationMethod"/>
+    </observation>
+  </entryRelationship>
+
+    <!--  Startification Reporting Template for NUMER  52FBD726-4DD1-48F5-98B9-7175754923E1  Stratification 40280381-3D61-56A7-013E-5D53298E6DA3   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="0"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D53298E6DA3"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+    <!--  Startification Reporting Template for NUMER  52FBD726-4DD1-48F5-98B9-7175754923E1  Stratification 40280381-3D61-56A7-013E-5D532AF06DA5   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="1"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D532AF06DA5"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+      <!--    SEX Supplemental Data Reporting for NUMER  52FBD726-4DD1-48F5-98B9-7175754923E1      -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Sex Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.6"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="184100006"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="F"
+               codeSystem="2.16.840.1.113762.1.4.1"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--     ETHNICITY Supplemental Data Reporting  for NUMER  52FBD726-4DD1-48F5-98B9-7175754923E1     -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Ethnicity Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.7"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="364699009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="2186-5"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--      RACE Supplemental Data Reporting  for NUMER  52FBD726-4DD1-48F5-98B9-7175754923E1 -->
+
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Race Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.8"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="103579009"
+          codeSystem="2.16.840.1.113883.6.96"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="1002-5"
+               codeSystem="2.16.840.1.113883.6.238"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+
+      <!--         PAYER Supplemental Data Reporting   forNUMER  52FBD726-4DD1-48F5-98B9-7175754923E1   -->
+      <!--                            Supplemental Date Template                                                  -->
+
+<entryRelationship typeCode="COMP">
+  <observation classCode="OBS" moodCode="EVN">
+    <!-- Payer Supplemental Data -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.9"/>
+      <templateId root="2.16.840.1.113883.10.20.24.3.55"/>
+
+    <id root="2.16.840.1.113883.3.5587.2"/>
+    <code code="48768-6"
+          codeSystem="2.16.840.1.113883.6.1"/>
+    <statusCode code="completed"/>
+    <effectiveTime>
+      <low nullFlavor="NA"/>
+      <high nullFlavor="NA"/>
+    </effectiveTime>
+        <value xsi:type="CD"
+               code="349"
+               codeSystem="2.16.840.1.113883.3.221.5"/>
+    <entryRelationship typeCode="SUBJ" inversionInd="true">
+      <!-- Aggregate Count template -->
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+
+        <code code="MSRAGG"
+              displayName="rate aggregation"
+              codeSystem="2.16.840.1.113883.5.4"
+              codeSystemName="ActCode"/>
+        <!-- (CONF:711245) -->
+        <statusCode code="completed"/>
+        <value xsi:type="INT" value="1"/>
+        <methodCode code="COUNT"
+                    displayName="Count"
+                    codeSystem="2.16.840.1.113883.5.84"
+                    codeSystemName="ObservationMethod"/>
+      </observation>
+    </entryRelationship>
+  </observation>
+</entryRelationship>
+  <reference typeCode="REFR">
+    <externalObservation classCode="OBS" moodCode="EVN">
+      <id root="52FBD726-4DD1-48F5-98B9-7175754923E1"/>
+    </externalObservation>
+  </reference>
+</observation>
+                    </component>
+                    <component>
+                      <!--   MEASURE DATA REPORTING FOR    NUMER  C43CE779-C5EE-4C15-A4CC-AF1C446CFB09  -->
+<observation classCode="OBS" moodCode="EVN">
+  <!-- Measure Data template -->
+  <templateId root="2.16.840.1.113883.10.20.27.3.5"/>
+  <code code="ASSERTION"
+        codeSystem="2.16.840.1.113883.5.4"
+        displayName="Assertion"
+        codeSystemName="ActCode"/>
+  <statusCode code="completed"/>
+  <value xsi:type="CD" code="NUMER"
+         codeSystem="2.16.840.1.113883.5.1063"
+         codeSystemName="ObservationValue"/>
+  <!-- Aggregate Count -->
+  <entryRelationship typeCode="SUBJ" inversionInd="true">
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+
+      <code code="MSRAGG"
+            displayName="rate aggregation"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <!-- (CONF:711245) -->
+      <statusCode code="completed"/>
+
+      <value xsi:type="INT" value="0"/>
+      <methodCode code="COUNT"
+                  displayName="Count"
+                  codeSystem="2.16.840.1.113883.5.84"
+                  codeSystemName="ObservationMethod"/>
+    </observation>
+  </entryRelationship>
+
+    <!--  Startification Reporting Template for NUMER  C43CE779-C5EE-4C15-A4CC-AF1C446CFB09  Stratification 40280381-3D61-56A7-013E-5D53298E6DA3   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="0"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D53298E6DA3"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+
+    <!--  Startification Reporting Template for NUMER  C43CE779-C5EE-4C15-A4CC-AF1C446CFB09  Stratification 40280381-3D61-56A7-013E-5D532AF06DA5   -->
+
+    <entryRelationship typeCode="COMP">
+      <observation classCode="OBS" moodCode="EVN">
+        <templateId root="2.16.840.1.113883.10.20.27.3.4"/>
+
+        <code code="ASSERTION"
+              codeSystem="2.16.840.1.113883.5.4"
+              displayName="Assertion"
+              codeSystemName="ActCode"/>
+        <statusCode code="completed"/>
+        <!-- TODO: (CONF:711232) requires us to know the code element in the measure, but this isn't stored.
+                  value is a SHOULD though. Might always be 2112-8 birth date?
+        <value xsi:type="CD" nullFlavor="OTH">
+         <originalText>Stratum</originalText>
+        </value>
+        -->
+        <entryRelationship typeCode="SUBJ" inversionInd="true">
+          <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+            <!-- Aggregate Count (CMS EP) template ID CONF:711263. -->
+            <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+            <code code="MSRAGG"
+                  displayName="rate aggregation"
+                  codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode"/>
+            <!-- (CONF:711245) -->
+            <statusCode code="completed"/>
+            <value xsi:type="INT" value="0"/>
+            <methodCode code="COUNT"
+                        displayName="Count"
+                        codeSystem="2.16.840.1.113883.5.84"
+                        codeSystemName="ObservationMethod"/>
+          </observation>
+        </entryRelationship>
+        <reference typeCode="REFR">
+          <externalObservation classCode="OBS" moodCode="EVN">
+            <id root="40280381-3D61-56A7-013E-5D532AF06DA5"/>
+          </externalObservation>
+        </reference>
+      </observation>
+    </entryRelationship>
+  <reference typeCode="REFR">
+    <externalObservation classCode="OBS" moodCode="EVN">
+      <id root="C43CE779-C5EE-4C15-A4CC-AF1C446CFB09"/>
+    </externalObservation>
+  </reference>
+</observation>
+                    </component>
+              </organizer>
+            </entry>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>
