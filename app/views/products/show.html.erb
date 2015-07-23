@@ -6,6 +6,19 @@
   <div class="buffered">
     <section class="tb">
       <div class="stacked" id="pageButtons">
+        <%= button_to "Upload Test", product_tests_path(
+		:product_test=> {
+			:product_id => "55afb6c932393704b7000002",
+			:name => "asdf_test",
+			:effective_date => "1388534399",
+			:description => "",
+			:measure_ids => ["40280381-4555-E1C1-0145-8EB06E66277A"]
+		},
+		:bundle_id => "55afb5ad32393704ab000000",
+		:type => "CalculatedProductTest"
+	),
+	{ :class => "cmd" }
+	%>
         <%= link_to "Add Test", new_product_test_path(:product_id => @product), { :class => "cmd" } %>
         <%= link_to "Edit Product", edit_product_path, { :class => "cmd" } %>
       </div>
