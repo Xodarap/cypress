@@ -1,4 +1,4 @@
-
+require 'zip/zip'
 class CalculatedProductTest < ProductTest
 
   aasm :column => :state do
@@ -20,6 +20,31 @@ class CalculatedProductTest < ProductTest
   #after the test is created generate the population
   after_create :gen_pop
 
+  def initialize(args = nil)
+    if args != nil
+      if args.has_key?("test_zip")
+        test_zip = args["test_zip"]
+        @uploaded_patient_xml_strings = get_file_contents_from_zip(test_zip)
+        # ROGTODO: can the patient strings be passed as part of agrs to super?
+        # ROGTODO: don't hard-code the measure_ids
+        return super({"name"=>"uploaded_test", "product_id"=>args["product_id"], "effective_date"=>"1388534399", "measure_ids"=>["40280381-4555-E1C1-0145-8EB06E66277A"]})
+      end
+    end
+    super(args)
+  end
+
+  def get_file_contents_from_zip(test_zip)
+    data = test_zip.open.read
+    content_strings = []
+    Zip::ZipFile.open(test_zip.path()) do |zipfile|
+      zipfile.each do |entry|
+        cs = entry.get_input_stream.read
+        content_strings.push(cs)
+      end
+    end
+    content_strings
+  end
+
   def gen_pop
     self.generate_population
   end
@@ -31,25 +56,40 @@ class CalculatedProductTest < ProductTest
   end
 
   def generate_records
-    min_set = PatientPopulation.min_coverage(self.measure_ids, self.bundle)
-    p_ids = min_set[:minimal_set]
-    overflow = min_set[:overflow]
-    all = p_ids + overflow
-    randomization_ids = all
-    while p_ids.length < 5 && overflow.length != 0
+    if @uploaded_patient_xml_strings != nil
+      @uploaded_patient_xml_strings.each do |ps|
+        pr = HealthDataStandards::Import::BulkRecordImporter.import_and_return_unsaved_record(ps)
+        pr["test_id"] = self.id
+        pr.save
+      end
+      # ROGTODO: need to do the medical_record_assigner part?
+    else
+      min_set = PatientPopulation.min_coverage(self.measure_ids, self.bundle)
+      p_ids = min_set[:minimal_set]
+      print "minimal ids:\n"
+      print p_ids.length.to_s() + "\n"
+      p_ids.each { |pid| print pid + "\n" }
+      print "\n"
+      overflow = min_set[:overflow]
+      print "overflow length: " + overflow.length.to_s() + "\n"
+      all = p_ids + overflow
+      randomization_ids = all
+      while p_ids.length < 5 && overflow.length != 0
         p_ids << overflow.sample
-    end
-    #randomly pick a number of other patients to give to the vendor
+      end
+      #randomly pick a number of other patients to give to the vendor
 
-    # do this synchronously because it does not take long
-    # p_ids = Record.where(:test_id=>nil, :type=>"ep").collect{|p| p.medical_record_number}
-    pcj = Cypress::PopulationCloneJob.new({'patient_ids' =>p_ids, 'test_id' => self.id, "randomize_names"=> true, "randomization_ids" => randomization_ids})
-    pcj.perform
+      # do this synchronously because it does not take long
+      # p_ids = Record.where(:test_id=>nil, :type=>"ep").collect{|p| p.medical_record_number}
+      pcj = Cypress::PopulationCloneJob.new({'patient_ids' =>p_ids, 'test_id' => self.id, "randomize_names"=> true, "randomization_ids" => randomization_ids})
+      pcj.perform
 
-    self.records.each do |r|
-      r.medical_record_assigner = "Cypress" if r.medical_record_assigner.nil?
-      r.save!
+      self.records.each do |r|
+        r.medical_record_assigner = "Cypress" if r.medical_record_assigner.nil?
+        r.save!
+      end
     end
+
     #now calculate the expected results
     self.calculate
   end
