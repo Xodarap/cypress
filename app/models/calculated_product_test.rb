@@ -25,9 +25,14 @@ class CalculatedProductTest < ProductTest
       if args.has_key?("test_zip")
         test_zip = args["test_zip"]
         @uploaded_patient_xml_strings = get_file_contents_from_zip(test_zip)
-        # ROGTODO: can the patient strings be passed as part of agrs to super?
-        # ROGTODO: don't hard-code the measure_ids
-        return super({"name"=>"uploaded_test", "product_id"=>args["product_id"], "effective_date"=>"1388534399", "measure_ids"=>["40280381-4555-E1C1-0145-8EB06E66277A"]})
+        # ROGTODO: should the patient strings be passed as part of agrs to super?
+        measure_ids = get_measure_ids_from_patient_xml_string(@uploaded_patient_xml_strings[0])
+        @uploaded_patient_xml_strings.each do |ps|
+          patient_measure_ids = get_measure_ids_from_patient_xml_string(ps)
+          patient_measure_ids.each { |pmi| raise "Patients have different measure ids!" unless measure_ids.include?(pmi) }
+        end
+        # ROGTODO: don't hardcode name or effective_date
+        return super({"name"=>"uploaded_test", "product_id"=>args["product_id"], "effective_date"=>"1388534399", "measure_ids"=>measure_ids})
       end
     end
     super(args)
@@ -43,6 +48,16 @@ class CalculatedProductTest < ProductTest
       end
     end
     content_strings
+  end
+
+  def get_measure_ids_from_patient_xml_string(patient_xml_string)
+    doc = Nokogiri::XML(patient_xml_string)
+    # ROGTODO: handle other formats?
+    doc.root.add_namespace_definition('cda', 'urn:hl7-org:v3')
+    nodes = doc.xpath("/cda:ClinicalDocument/cda:component/cda:structuredBody/cda:component/cda:section/cda:entry/cda:organizer/cda:templateId[@root='2.16.840.1.113883.10.20.24.3.97']")
+    measure_ids = []
+    nodes.each { |node| measure_ids << node.next_element["extension"] }
+    measure_ids
   end
 
   def gen_pop
