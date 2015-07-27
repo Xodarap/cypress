@@ -158,14 +158,14 @@ $(document).ready(function() {
         <tbody>
 
           <tr id="advanced_options" class="hidden">
-            <td>1. </td>
-            <td><%= f.label '', "Test File", :for => :tests_zip %></td>
-            <td>&nbsp;<td>
             <td><%= f.file_field :test_zip, accept: "application/zip" %></td>
             <input name="product_test[product_id]" type="hidden" value= <%= @product.id %> />
             <%= hidden_field_tag(:type, "CalculatedProductTest") %>
             <%-# ROGTODO: don't hard-code bundle id -%>
             <%= hidden_field_tag(:bundle_id, "55afb5ad32393704ab000000") %>
+          </tr>
+          <tr>
+            <td>Give the test a name: <input name="product_test[name]" /></td>
           </tr>
         </tbody>
       </table>

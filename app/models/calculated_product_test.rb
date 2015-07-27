@@ -31,8 +31,8 @@ class CalculatedProductTest < ProductTest
           patient_measure_ids = get_measure_ids_from_patient_xml_string(ps)
           patient_measure_ids.each { |pmi| raise "Patients have different measure ids!" unless measure_ids.include?(pmi) }
         end
-        # ROGTODO: don't hardcode name or effective_date
-        return super({"name"=>"uploaded_test", "product_id"=>args["product_id"], "effective_date"=>"1388534399", "measure_ids"=>measure_ids})
+        # ROGTODO: don't hardcode effective_date
+        return super({"name"=>args["name"], "product_id"=>args["product_id"], "effective_date"=>"1388534399", "measure_ids"=>measure_ids})
       end
     end
     super(args)
