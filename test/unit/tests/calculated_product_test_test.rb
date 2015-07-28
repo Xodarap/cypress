@@ -82,6 +82,11 @@ class CalculatedProductTestTest < ActiveSupport::TestCase
     assert te.execution_errors.empty?, "should be no errors for good cat I archive"
   end
 
+  test "should create a ptest from an uploaded zip" do
+    test_zip = Rack::Test::UploadedFile.new(File.new(File.join(Rails.root, 'test/fixtures/product_tests/test_with_all_eye_measures.zip')), "application/zip")
+    assert test_zip != nil, "should upload the zip"
+  end
+
   test "should cause error  when stratifications are missing" do
     ptest = ProductTest.find("51703a6a3054cf8439000044")
     xml = Rack::Test::UploadedFile.new(File.new(File.join(Rails.root, 'test/fixtures/qrda/ep_test_qrda_cat3_missing_stratification.xml')), "application/xml")
