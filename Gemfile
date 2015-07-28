@@ -5,7 +5,6 @@ gem 'rails', '~> 4.1.8'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rake'
-gem 'zip'
 
 # gem 'quality-measure-engine', :git => 'https://github.com/pophealth/quality-measure-engine.git', :branch => 'master'
 
