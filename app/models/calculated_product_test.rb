@@ -1,3 +1,5 @@
+require 'zip/zip'
+
 class CalculatedProductTest < ProductTest
 
   aasm :column => :state do
@@ -71,6 +73,18 @@ class CalculatedProductTest < ProductTest
 
     te.save
     te
+  end
+
+  def execute_cat1s(archive)
+    Zip::ZipFile.open(archive.path) do |master|
+      qrda_product_tests.each do |pt|
+        filename = pt.measures.first.nqf_id + '.zip'
+        tmp_filename = 'tmp/' + filename
+        master.extract(filename, tmp_filename) { true }
+        file = File.open(tmp_filename)
+        pt.execute(file)
+      end
+    end
   end
 
   def generate_qrda_cat1_test
